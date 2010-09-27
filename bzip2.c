@@ -1781,6 +1781,11 @@ IntNative main ( IntNative argc, Char *argv[] )
    Cell   *aa;
    Bool   decode;
 
+#ifdef __EMX__
+   _fsetmode( stdin, "b");
+   _fsetmode( stdout, "b");
+#endif
+
    /*-- Be really really really paranoid :-) --*/
    if (sizeof(Int32) != 4 || sizeof(UInt32) != 4  ||
        sizeof(Int16) != 2 || sizeof(UInt16) != 2  ||

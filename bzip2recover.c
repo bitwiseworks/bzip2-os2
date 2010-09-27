@@ -309,6 +309,11 @@ Int32 main ( Int32 argc, Char** argv )
    UInt32      buffHi, buffLo, blockCRC;
    Char*       p;
 
+#ifdef __EMX__
+   _fsetmode( stdin, "b");
+   _fsetmode( stdout, "b");
+#endif
+
    strcpy ( progName, argv[0] );
    inFileName[0] = outFileName[0] = 0;
 
