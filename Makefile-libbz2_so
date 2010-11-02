@@ -40,6 +40,15 @@ all: $(OBJS)
 	rm -f libbz2.so.1.0
 	ln -s libbz2.so.1.0.6 libbz2.so.1.0
 
+dll: $(OBJS)
+	echo "LIBRARY bz2 INITINSTANCE TERMINSTANCE" > bz2.def
+	echo "DATA MULTIPLE" >> bz2.def
+	echo "EXPORTS" >> bz2.def
+	emxexp $(OBJS) >> bz2.def
+	gcc -g $(LDFLAGS) bz2.def -o bz2.dll $(OBJS) $(OS2_DLL_LIBS) 
+	emximp -o libbz2.a bz2.def
+	emximp -o libbz2.lib bz2.def
+
 clean: 
 	rm -f $(OBJS) bzip2.o libbz2.so.1.0.6 libbz2.so.1.0 bzip2-shared
 

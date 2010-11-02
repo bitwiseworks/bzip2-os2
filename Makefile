@@ -19,6 +19,7 @@ CC=gcc
 AR=ar
 RANLIB=ranlib
 LDFLAGS=
+EXEEXT=.exe
 
 BIGFILES=-D_FILE_OFFSET_BITS=64
 CFLAGS=-Wall -Winline -O2 -g $(BIGFILES)
@@ -35,13 +36,13 @@ OBJS= blocksort.o  \
       decompress.o \
       bzlib.o
 
-all: libbz2.a bzip2 bzip2recover test
+all: libbz2.a bzip2$(EXEEXT) bzip2recover$(EXEEXT) test
 
-bzip2: libbz2.a bzip2.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -o bzip2 bzip2.o -L. -lbz2
+bzip2$(EXEEXT): libbz2.a bzip2.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o bzip2$(EXEEXT) bzip2.o -L. -lbz2
 
-bzip2recover: bzip2recover.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -o bzip2recover bzip2recover.o
+bzip2recover$(EXEEXT): bzip2recover.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o bzip2recover$(EXEEXT) bzip2recover.o
 
 libbz2.a: $(OBJS)
 	rm -f libbz2.a
@@ -53,7 +54,7 @@ libbz2.a: $(OBJS)
 	fi
 
 check: test
-test: bzip2
+test: bzip2$(EXEEXT)
 	@cat words1
 	./bzip2 -1  < sample1.ref > sample1.rb2
 	./bzip2 -2  < sample2.ref > sample2.rb2
