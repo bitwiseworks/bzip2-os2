@@ -19,6 +19,9 @@
 # This program is released under the terms of the license contained
 # in the file LICENSE.
 # ------------------------------------------------------------------
+VENDOR ?=community
+BUILD_INFO=\#\#1\#\# $(shell date +'%d %b %Y %H:%M:%S')     $(shell uname -n)
+BUILDLEVEL_INFO=@\#$(VENDOR):1.0.8\#@$(BUILD_INFO)::::0::
 
 
 SHELL=/bin/sh
@@ -43,11 +46,11 @@ all: $(OBJS)
 dll: $(OBJS)
 	echo "LIBRARY bz2 INITINSTANCE TERMINSTANCE" > bz2.def
 	echo "DATA MULTIPLE" >> bz2.def
+	echo "DESCRIPTION \"$(BUILDLEVEL_INFO)@@bzip2\"" >> $@
 	echo "EXPORTS" >> bz2.def
 	emxexp $(OBJS) >> bz2.def
 	gcc -g $(LDFLAGS) bz2.def -o bz2.dll $(OBJS) $(OS2_DLL_LIBS) 
-	emximp -o libbz2.a bz2.def
-	emximp -o libbz2.lib bz2.def
+	emximp -o libbz2_dll.a bz2.def
 
 clean: 
 	rm -f $(OBJS) bzip2.o libbz2.so.1.0.8 libbz2.so.1.0 bzip2-shared
