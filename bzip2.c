@@ -110,7 +110,7 @@
         } while ( 0 )
 #   endif
 
-#   ifdef __CYGWIN__
+#   if defined(__CYGWIN__) || defined(__OS2__)
 #     include <io.h>
 #     include <fcntl.h>
 #     undef SET_BINARY_MODE
@@ -1781,11 +1781,6 @@ IntNative main ( IntNative argc, Char *argv[] )
    Cell   *aa;
    Bool   decode;
 
-#ifdef __EMX__
-   _fsetmode( stdin, "b");
-   _fsetmode( stdout, "b");
-#endif
-
    /*-- Be really really really paranoid :-) --*/
    if (sizeof(Int32) != 4 || sizeof(UInt32) != 4  ||
        sizeof(Int16) != 2 || sizeof(UInt16) != 2  ||
@@ -1823,7 +1818,11 @@ IntNative main ( IntNative argc, Char *argv[] )
    copyFileName ( progNameReally, argv[0] );
    progName = &progNameReally[0];
    for (tmp = &progNameReally[0]; *tmp != '\0'; tmp++)
+#ifdef __OS2__
+      if (*tmp == PATH_SEP || *tmp == '\\') progName = tmp + 1;
+#else
       if (*tmp == PATH_SEP) progName = tmp + 1;
+#endif
 
 
    /*-- Copy flags from env var BZIP2, and 
