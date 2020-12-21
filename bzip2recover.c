@@ -309,11 +309,6 @@ Int32 main ( Int32 argc, Char** argv )
    UInt32      buffHi, buffLo, blockCRC;
    Char*       p;
 
-#ifdef __EMX__
-   _fsetmode( stdin, "b");
-   _fsetmode( stdout, "b");
-#endif
-
    strncpy ( progName, argv[0], BZ_MAX_FILENAME-1);
    progName[BZ_MAX_FILENAME-1]='\0';
    inFileName[0] = outFileName[0] = 0;
@@ -477,6 +472,9 @@ Int32 main ( Int32 argc, Char** argv )
             outFileName[k] = 0;
          strcpy (outFileName, inFileName);
          split = strrchr (outFileName, BZ_SPLIT_SYM);
+#ifdef __OS2__
+         split = strrchr (outFileName, '\\');
+#endif
          if (split == NULL) {
             split = outFileName;
          } else {
