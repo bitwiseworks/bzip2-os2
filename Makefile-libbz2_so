@@ -46,7 +46,7 @@ all: $(OBJS)
 dll: $(OBJS)
 	echo "LIBRARY bz2 INITINSTANCE TERMINSTANCE" > bz2.def
 	echo "DATA MULTIPLE" >> bz2.def
-	echo "DESCRIPTION \"$(BUILDLEVEL_INFO)@@bzip2\"" >> $@
+	echo "DESCRIPTION \"$(BUILDLEVEL_INFO)@@bzip2\"" >> bz2.def
 	echo "EXPORTS" >> bz2.def
 	emxexp $(OBJS) >> bz2.def
 	gcc -g $(LDFLAGS) bz2.def -o bz2.dll $(OBJS) $(OS2_DLL_LIBS) 
